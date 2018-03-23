@@ -18,7 +18,7 @@ const endpoints = [
   { label: 'Search User (skellock)', endpoint: 'getUser', args: ['skellock'] }
 ]
 
-export default class HomeScreen extends React.Component {
+export default class Schedules1Screen extends React.Component {
 
   render () {
     return (

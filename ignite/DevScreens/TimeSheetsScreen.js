@@ -18,7 +18,7 @@ const endpoints = [
   { label: 'Search User (skellock)', endpoint: 'getUser', args: ['skellock'] }
 ]
 
-export default class Home2Screen extends React.Component {
+export default class TimeSheetsScreen extends React.Component {
 
   render () {
     return (

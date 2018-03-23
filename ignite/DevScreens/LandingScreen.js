@@ -10,9 +10,15 @@ import FJSON from "format-json";
 // Styles
 import styles from "./Styles/APITestingScreenStyles";
 
-const data = ["Privacy Policy", "Terms of Service", "Profile", "Account Summary"];
+// API buttons here:
+const endpoints = [
+  { label: "Github Root", endpoint: "getRoot" },
+  { label: "Github Rate Limit", endpoint: "getRate" },
+  { label: "Search User (gantman)", endpoint: "getUser", args: ["gantman"] },
+  { label: "Search User (skellock)", endpoint: "getUser", args: ["skellock"] }
+];
 
-export default class SettingsScreen extends React.Component {
+export default class LandingScreen extends React.Component {
   render() {
     return (
       <View style={styles.mainContainer}>
@@ -25,19 +31,15 @@ export default class SettingsScreen extends React.Component {
           }}
           ref="container"
         >
-          {data.map(item => (
-            <Button
-              key={item}
-              title={item}
-              onPress={() => {
-                //this.props.navigation.navigate("TabsNavigatorExample");
-              }}
-            />
-          ))}
-
           <Button
-            title={"Logout"}
-            onPress={() => this.props.navigation.navigate("LandingScreen")}
+            title="Tabs Example"
+            onPress={() =>
+              this.props.navigation.navigate("TabsNavigatorExample")}
+          />
+          <Button
+            title="Drawer Example"
+            onPress={() =>
+              this.props.navigation.navigate("DrawerNavigatorExample")}
           />
         </ScrollView>
       </View>

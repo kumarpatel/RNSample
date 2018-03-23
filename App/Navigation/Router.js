@@ -2,6 +2,7 @@ import React from "react";
 import { Animated, Easing, Image, View } from "react-native";
 import {
   StackNavigator,
+  SwitchNavigator,
   TabNavigator,
   TabBarBottom,
   NavigationActions
@@ -17,27 +18,10 @@ import MessagesListScreen from "../../ignite/DevScreens/MessagesListScreen";
 import MessageDetailScreen from "../../ignite/DevScreens/MessageDetailScreen";
 import AlertDetailScreen from "../../ignite/DevScreens/AlertDetailScreen";
 import SettingsScreen from "../../ignite/DevScreens/SettingsScreen";
+import LandingScreen from "../../ignite/DevScreens/LandingScreen";
+import TimeSheetsScreen from "../../ignite/DevScreens/TimeSheetsScreen";
 
 import TabIcon from "../Components/TabIcon";
-
-const HORIZONTAL_SLIDE_TRANSITION_OVERRIDE = () => ({
-  transitionSpec: {
-    duration: 250,
-    easing: Easing.inOut(Easing.ease),
-    timing: Animated.timing
-  },
-  // screenInterpolator: CardStackStyleInterpolator.forHorizontal,
-  headerRightInterpolator: () => {}
-});
-
-const NAVIGATE_ONCE_OVERRIDE = getStateForAction => (action, state) => {
-  const { type, routeName } = action;
-  return state &&
-    type === NavigationActions.NAVIGATE &&
-    routeName === state.routes[state.routes.length - 1].routeName
-    ? null
-    : getStateForAction(action, state);
-};
 
 const NAVIGATOR_OPTIONS = {
   headerStyle: {
@@ -56,7 +40,7 @@ const TOP_TAB_BAR_OPTIONS = {
   activeTintColor: Colors.facebook,
   indicatorStyle: {
     backgroundColor: Colors.facebook,
-    height: 4
+    height: 4,
   },
   tabStyle: {
     margin: 0,
@@ -103,7 +87,6 @@ export const HomeTabScreens = StackNavigator(
     headerMode: "float",
     headerTransitionPreset: "uikit",
     navigationOptions: NAVIGATOR_OPTIONS
-    // transitionConfig: HORIZONTAL_SLIDE_TRANSITION_OVERRIDE
   }
 );
 
@@ -122,7 +105,6 @@ export const SchedulesScreens = StackNavigator(
     headerMode: "float",
     headerTransitionPreset: "uikit",
     navigationOptions: NAVIGATOR_OPTIONS
-    // transitionConfig: HORIZONTAL_SLIDE_TRANSITION_OVERRIDE
   }
 );
 
@@ -137,7 +119,20 @@ export const SettingTabsScreens = StackNavigator(
     headerMode: "float",
     headerTransitionPreset: "uikit",
     navigationOptions: NAVIGATOR_OPTIONS
-    // transitionConfig: HORIZONTAL_SLIDE_TRANSITION_OVERRIDE
+  }
+);
+
+export const TimeSheetsTabsScreens = StackNavigator(
+  {
+    Settings: {
+      screen: TimeSheetsScreen,
+      navigationOptions: { headerTitle: "Time Sheets" }
+    }
+  },
+  {
+    headerMode: "float",
+    headerTransitionPreset: "uikit",
+    navigationOptions: NAVIGATOR_OPTIONS
   }
 );
 
@@ -162,11 +157,7 @@ export const MessagesTabsScreens = TabNavigator(
   },
   {
     ...TabNavigator.Presets.AndroidTopTabs,
-    // tabBarPosition: "top",
     lazy: false,
-    // tabBarComponent: TabBarBottomCustom,
-    // animationEnabled: true,
-    // swipeEnabled: true,
     tabBarOptions: TOP_TAB_BAR_OPTIONS
   }
 );
@@ -182,13 +173,11 @@ export const MessagesScreen = StackNavigator(
     MessageDetail: {
       screen: MessageDetailScreen,
       navigationOptions: {
-        headerTitle: "Message Detail"
       }
     },
     AlertDetail: {
       screen: AlertDetailScreen,
       navigationOptions: {
-        headerTitle: "Alert Detail"
       }
     }
   },
@@ -196,16 +185,15 @@ export const MessagesScreen = StackNavigator(
     headerMode: "float",
     headerTransitionPreset: "uikit",
     navigationOptions: NAVIGATOR_OPTIONS
-    // transitionConfig: HORIZONTAL_SLIDE_TRANSITION_OVERRIDE
   }
 );
 
-export const SignedInNavigator = TabNavigator(
+export const TabsNavigatorExample = TabNavigator(
   {
     HomeTabScreens: {
       screen: HomeTabScreens,
       navigationOptions: {
-        tabBarLabel: "Home",
+        tabBarLabel: "Dashboard",
         tabBarIcon: props => <TabIcon name="home" {...props} />,
         tabBarStyle: NavStyles.tabBarStyle
       }
@@ -227,7 +215,7 @@ export const SignedInNavigator = TabNavigator(
       }
     },
     SettingsTab: {
-      screen: SettingTabsScreens,
+      screen: TimeSheetsTabsScreens,
       navigationOptions: {
         tabBarLabel: "Time Sheets",
         tabBarIcon: props => <TabIcon name="settings" {...props} />,
@@ -257,34 +245,25 @@ export const SignedInNavigator = TabNavigator(
   }
 );
 
-export const createRootNavigator = (authState = false) => {
-  let initialRouteName;
-
-  // if (authState == LOGGED_IN) {
-  //   initialRouteName = "SignedInNavigator";
-  // } else if (authState == GUEST) {
-  //   initialRouteName = "GuestNavigator";
-  // } else {
-  //   initialRouteName = "SignedOutNavigator";
-  // }
-  return StackNavigator(
+export const createRootNavigator = () => {
+  return SwitchNavigator(
     {
-      SignedInNavigator: {
-        screen: SignedInNavigator,
+      TabsNavigatorExample: {
+        screen: TabsNavigatorExample,
         navigationOptions: {}
-      }
-      // SignedOutNavigator: {
+      },
+      // DrawerNavigatorExample: {
       //   screen: SignedOutNavigator,
       //   navigationOptions: {}
       // },
-      // GuestNavigator: {
-      //   screen: GuestNavigator,
-      //   navigationOptions: {}
-      // }
+      LandingScreen: {
+        screen: LandingScreen,
+        navigationOptions: {}
+      }
     },
     {
       headerMode: "none",
-      initialRouteName: "SignedInNavigator",
+      initialRouteName: "LandingScreen",
       cardStyle: {
         backgroundColor: Colors.panther
       }
