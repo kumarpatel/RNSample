@@ -9,6 +9,9 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+
       backgroundColor: Colors.snow
     },
     backgroundImage: {

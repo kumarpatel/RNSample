@@ -94,6 +94,14 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'debugkey'
+            keyPassword 'debugkey'
+            storeFile file('../../debug-key.jks')
+            storePassword 'debugkey'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
@@ -116,7 +124,11 @@ android {
         }
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
+            signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -137,6 +149,16 @@ android {
 }
 
 dependencies {
+    compile(project(':react-native-firebase')) {
+        transitive = false
+      }
+      // Firebase dependencies
+      compile "com.google.android.gms:play-services-base:11.8.0"
+      compile "com.google.firebase:firebase-core:11.8.0"
+        compile "com.google.firebase:firebase-auth:11.8.0"
+
+    compile project(':react-native-testfairy')
+    compile project(':react-native-config')
     compile project(':react-native-vector-icons')
     compile project(':react-native-device-info')
     compile fileTree(dir: "libs", include: ["*.jar"])
@@ -150,3 +172,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+apply plugin: 'com.google.gms.google-services'
